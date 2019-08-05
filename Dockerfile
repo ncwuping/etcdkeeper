@@ -18,6 +18,7 @@ RUN wget -c -q -O etcdkeeper-${ETCDKEEPER_VERSION}.tar.gz https://github.com/evi
 
 FROM alpine:3.10.1
 
+ENV ETCDKEEPER_VERSION 0.7.5
 ENV HOST="0.0.0.0"
 ENV PORT="8080"
 
