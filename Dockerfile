@@ -9,9 +9,8 @@ RUN wget -c -q -O etcdkeeper-${ETCDKEEPER_VERSION}.tar.gz https://github.com/evi
  && rm -f etcdkeeper-${ETCDKEEPER_VERSION}.tar.gz \
  && apk add -U git \
  && go get github.com/golang/dep/... \
- && mv -f etcdkeeper-${ETCDKEEPER_VERSION}/src ./ \
+ && mv -f etcdkeeper-${ETCDKEEPER_VERSION}/src/* ./ \
  && mv -f etcdkeeper-${ETCDKEEPER_VERSION}/Gopkg.* ./ \
- && rm -rf etcdkeeper-${ETCDKEEPER_VERSION} \
  && dep ensure -update \
  && go build -o etcdkeeper.bin etcdkeeper/main.go
 
@@ -25,7 +24,7 @@ RUN apk add --no-cache ca-certificates
 
 WORKDIR /etcdkeeper
 COPY --from=builder /go/src/github.com/wuping/etcdkeeper/etcdkeeper.bin .
-ADD assets assets
+COPY --from=builder /go/src/github.com/wuping/etcdkeeper/etcdkeeper-${ETCDKEEPER_VERSION}/assets .
 
 EXPOSE ${PORT}
 
