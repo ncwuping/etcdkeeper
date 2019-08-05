@@ -26,7 +26,7 @@ RUN apk add --no-cache ca-certificates
 
 WORKDIR /etcdkeeper
 COPY --from=builder /go/src/github.com/wuping/etcdkeeper/etcdkeeper.bin .
-COPY --from=builder /go/src/github.com/wuping/etcdkeeper/etcdkeeper-${ETCDKEEPER_VERSION}/assets .
+COPY --from=builder /go/src/github.com/wuping/etcdkeeper/etcdkeeper-${ETCDKEEPER_VERSION}/assets ./assets
 
 EXPOSE ${PORT}
 
