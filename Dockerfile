@@ -4,7 +4,8 @@ WORKDIR /go/src/github.com/wuping/etcdkeeper
 
 ENV ETCDKEEPER_VERSION 0.7.5
 
-RUN wget -c -q -O etcdkeeper-${ETCDKEEPER_VERSION}.tar.gz https://github.com/evildecay/etcdkeeper/archive/v${ETCDKEEPER_VERSION}.tar.gz \
+RUN pwd \
+ && wget -c -q -O etcdkeeper-${ETCDKEEPER_VERSION}.tar.gz https://github.com/evildecay/etcdkeeper/archive/v${ETCDKEEPER_VERSION}.tar.gz \
  && tar zxf etcdkeeper-${ETCDKEEPER_VERSION}.tar.gz \
  && rm -f etcdkeeper-${ETCDKEEPER_VERSION}.tar.gz \
  && apk add -U git \
