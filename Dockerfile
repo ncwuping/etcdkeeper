@@ -11,7 +11,7 @@ RUN wget -c -q -O etcdkeeper-${ETCDKEEPER_VERSION}.tar.gz https://github.com/evi
  && go get github.com/golang/dep/... \
  && mv -f etcdkeeper-${ETCDKEEPER_VERSION}/src/* ./ \
  && mv -f etcdkeeper-${ETCDKEEPER_VERSION}/Gopkg.* ./ \
- && find . \
+ && ln -sf github.com/wuping/etcdkeeper/etcdkeeper /go/src/ \
  && dep ensure -update \
  && go build -o etcdkeeper.bin etcdkeeper/main.go
 
