@@ -1,15 +1,19 @@
 FROM golang:1.9-alpine as builder
 
-RUN apk add -U git \
-    && go get github.com/golang/dep/...
+WORKDIR /go/src/github.com/wuping/etcdkeeper
 
-WORKDIR /go/src/github.com/evildecay/etcdkeeper
+ENV ETCDKEEPER_VERSION 0.7.5
 
-ADD src ./
-ADD Gopkg.* ./
-
-RUN dep ensure -update \
-    && go build -o etcdkeeper.bin etcdkeeper/main.go
+RUN wget -c -q -O etcdkeeper-${ETCDKEEPER_VERSION}.tar.gz https://github.com/evildecay/etcdkeeper/archive/v${ETCDKEEPER_VERSION}.tar.gz \
+ && tar zxf etcdkeeper-${ETCDKEEPER_VERSION}.tar.gz \
+ && rm -f etcdkeeper-${ETCDKEEPER_VERSION}.tar.gz \
+ && apk add -U git \
+ && go get github.com/golang/dep/... \
+ && mv -f etcdkeeper-${ETCDKEEPER_VERSION}/src ./ \
+ && mv -f etcdkeeper-${ETCDKEEPER_VERSION}/Gopkg.* ./ \
+ && rm -rf etcdkeeper-${ETCDKEEPER_VERSION} \
+ && dep ensure -update \
+ && go build -o etcdkeeper.bin etcdkeeper/main.go
 
 
 FROM alpine:4.0.14
@@ -19,10 +23,8 @@ ENV PORT="8080"
 
 RUN apk add --no-cache ca-certificates
 
-RUN apk add --no-cache ca-certificates
-
 WORKDIR /etcdkeeper
-COPY --from=builder /go/src/github.com/evildecay/etcdkeeper/etcdkeeper.bin .
+COPY --from=builder /go/src/github.com/wuping/etcdkeeper/etcdkeeper.bin .
 ADD assets assets
 
 EXPOSE ${PORT}
