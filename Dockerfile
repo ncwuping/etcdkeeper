@@ -1,8 +1,8 @@
-FROM golang:1.9-alpine as builder
+FROM golang:1.13.14-alpine3.11 as builder
 
 WORKDIR /go/src/github.com/wuping/etcdkeeper
 
-ENV ETCDKEEPER_VERSION 0.7.5
+ENV ETCDKEEPER_VERSION 0.7.6
 
 RUN wget -c -q -O etcdkeeper-${ETCDKEEPER_VERSION}.tar.gz https://github.com/evildecay/etcdkeeper/archive/v${ETCDKEEPER_VERSION}.tar.gz \
  && tar zxf etcdkeeper-${ETCDKEEPER_VERSION}.tar.gz \
@@ -16,9 +16,9 @@ RUN wget -c -q -O etcdkeeper-${ETCDKEEPER_VERSION}.tar.gz https://github.com/evi
  && go build -o etcdkeeper.bin etcdkeeper/main.go
 
 
-FROM alpine:3.10.1
+FROM alpine:3.11.6
 
-ENV ETCDKEEPER_VERSION 0.7.5
+ENV ETCDKEEPER_VERSION 0.7.6
 ENV HOST="0.0.0.0"
 ENV PORT="8080"
 
